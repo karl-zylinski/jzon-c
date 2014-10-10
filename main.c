@@ -1,4 +1,4 @@
-#include "hjson.h"
+#include "jzon.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,9 +34,9 @@ int main()
 {
 	char* file;
 	int error = 0;
-	HJsonParseResult result;
-	load_file("test.hjson", &file);
-	result = hjson_parse(file);
+	JzonParseResult result;
+	load_file("test.jzon", &file);
+	result = jzon_parse(file);
 	assert(result.success == true);
 	getchar();
 	return 0;

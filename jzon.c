@@ -1,4 +1,4 @@
-#include "hjson.h"
+#include "jzon.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,7 +71,7 @@ void arr_add(Array* arr, void* e)
 }
 
 
-// HJson implmenetation
+// Jzon implmenetation
 
 void next(const char** input)
 {
@@ -158,9 +158,9 @@ char* parse_multiline_string(const char** input)
 	return NULL;
 }
 
-int parse_value(const char** input, HJsonValue* output);
+int parse_value(const char** input, JzonValue* output);
 
-int parse_string(const char** input, HJsonValue* output)
+int parse_string(const char** input, JzonValue* output)
 {
 	char* str = parse_pure_string(input);
 
@@ -172,7 +172,7 @@ int parse_string(const char** input, HJsonValue* output)
 	return 0;
 }
 
-int parse_array(const char** input, HJsonValue* output)
+int parse_array(const char** input, JzonValue* output)
 {
 	Array array_values = {0};
 	
@@ -191,11 +191,11 @@ int parse_array(const char** input, HJsonValue* output)
 
 	while (current(input))
 	{
-		HJsonValue* value = NULL;
+		JzonValue* value = NULL;
 		int error = 0;
 		skip_whitespace(input);
-		value = (HJsonValue*)malloc(sizeof(HJsonValue));
-		memset(value, 0, sizeof(HJsonValue));
+		value = (JzonValue*)malloc(sizeof(JzonValue));
+		memset(value, 0, sizeof(JzonValue));
 		error = parse_value(input, value);
 
 		if (error != 0)
@@ -217,14 +217,14 @@ int parse_array(const char** input, HJsonValue* output)
 	}
 	
 	output->size = array_values.size; 
-	output->array_values = (HJsonValue**)array_values.arr;	
+	output->array_values = (JzonValue**)array_values.arr;	
 	return 0;
 }
 
-int parse_object(const char** input, HJsonValue* output)
+int parse_object(const char** input, JzonValue* output)
 {
 	Array object_values = {0};
-	HJsonKeyValuePair* pair = NULL;
+	JzonKeyValuePair* pair = NULL;
 
 	if (current(input) != '{')
 		return -1;
@@ -242,9 +242,9 @@ int parse_object(const char** input, HJsonValue* output)
 	while (current(input))
 	{
 		char* key = NULL;
-		HJsonValue* value = NULL;
+		JzonValue* value = NULL;
 		int error = 0;
-		pair = (HJsonKeyValuePair*)malloc(sizeof(HJsonKeyValuePair));
+		pair = (JzonKeyValuePair*)malloc(sizeof(JzonKeyValuePair));
 		skip_whitespace(input);
 		key = parse_keyname(input);
 		
@@ -257,8 +257,8 @@ int parse_object(const char** input, HJsonValue* output)
 			return -1;
 
 		next(input);
-		value = (HJsonValue*)malloc(sizeof(HJsonValue));
-		memset(value, 0, sizeof(HJsonValue));
+		value = (JzonValue*)malloc(sizeof(JzonValue));
+		memset(value, 0, sizeof(JzonValue));
 		error = parse_value(input, value);
 
 		if (error != 0)
@@ -281,11 +281,11 @@ int parse_object(const char** input, HJsonValue* output)
 	}
 	
 	output->size = object_values.size; 
-	output->object_values = (HJsonKeyValuePair**)object_values.arr;	
+	output->object_values = (JzonKeyValuePair**)object_values.arr;	
 	return 0;
 }
 
-int parse_number(const char** input, HJsonValue* output)
+int parse_number(const char** input, JzonValue* output)
 {
 	String num = {0};
 	bool is_float = false;
@@ -348,7 +348,7 @@ int parse_number(const char** input, HJsonValue* output)
 	return 0;
 }
 
-int parse_word_or_string(const char** input, HJsonValue* output)
+int parse_word_or_string(const char** input, JzonValue* output)
 {
 	String str = {0};
 
@@ -396,7 +396,7 @@ int parse_word_or_string(const char** input, HJsonValue* output)
 	return 0;
 }
 
-int parse_value(const char** input, HJsonValue* output)
+int parse_value(const char** input, JzonValue* output)
 {
 	char ch;
 	skip_whitespace(input);
@@ -414,11 +414,11 @@ int parse_value(const char** input, HJsonValue* output)
 	return -1;
 }
 
-HJsonParseResult hjson_parse(const char* input)
+JzonParseResult jzon_parse(const char* input)
 {
-	HJsonValue output = {0};
+	JzonValue output = {0};
 	int error = parse_value(&input, &output);
-	HJsonParseResult result = {0};
+	JzonParseResult result = {0};
 	result.output = output;
 	result.success = error == 0;
 	return result;
