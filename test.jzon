@@ -1,3 +1,5 @@
 {
-  rate: ["TJAAAA", 10, "hej hej hej"]
+    "rate": 1000 
+    key: "value"
+    text: look ma, no quotes!
 }

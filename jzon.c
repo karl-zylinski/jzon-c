@@ -355,45 +355,53 @@ int parse_word_or_string(const char** input, JzonValue* output)
 	while (current(input))
 	{
 		char ch = current(input);
-		
-		if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '\'')
-			str_add(&str, ch);
-		else
+
+		if (ch == '\r' || ch == '\n')
 		{
 			if (str.size == 3 && str_equals(&str, "'''"))
 			{
 				output->string_value = parse_multiline_string(input);
 				output->is_string = true;
+				free(str.str);
+				return 0;
 			}
 			else if (str.size == 4 && str_equals(&str, "true"))
 			{
 				output->is_bool = true;
 				output->bool_value = true;
+				free(str.str);
+				return 0;
 			}
 			else if (str.size == 5 && str_equals(&str, "false"))
 			{
 				output->is_bool = true;
 				output->bool_value = false;
+				free(str.str);
+				return 0;
 			}
 			else if (str.size == 4 && str_equals(&str, "null"))
 			{
 				output->is_null = true;
+				free(str.str);
+				return 0;
 			}
 			else
 			{
-				free(str.str);
-				return -1;
+				output->is_string = true;
+				output->string_value = str.str;
+				return 0;
 			}
 
 			break;
-		}
+		}		
+		else
+			str_add(&str, ch);
 
 		next(input);
-	}	
-	
-	next(input);
+	}
+
 	free(str.str);
-	return 0;
+	return -1;
 }
 
 int parse_value(const char** input, JzonValue* output)
