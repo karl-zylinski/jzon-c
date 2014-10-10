@@ -34,11 +34,10 @@ int main()
 {
 	char* file;
 	int error = 0;
-	HJsonValue output = {0};
+	HJsonParseResult result;
 	load_file("test.hjson", &file);
-	error = hjson_parse(file, &output);
-	assert(error == 0);
-	printf("%i", output.is_object);
+	result = hjson_parse(file);
+	assert(result.success == true);
 	getchar();
 	return 0;
 }

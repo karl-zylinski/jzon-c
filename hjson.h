@@ -35,6 +35,12 @@ struct HJsonKeyValuePair {
 	HJsonValue* value;
 };
 
-int hjson_parse(const char* input, HJsonValue* output);
+typedef struct HJsonParseResult {
+	bool success;
+	HJsonValue output;
+} HJsonParseResult;
+
+
+HJsonParseResult hjson_parse(const char* input);
 
 #endif

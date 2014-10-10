@@ -414,8 +414,12 @@ int parse_value(const char** input, HJsonValue* output)
 	return -1;
 }
 
-int hjson_parse(const char* input, HJsonValue* output)
+HJsonParseResult hjson_parse(const char* input)
 {
-	memset(output, 0, sizeof(HJsonValue));
-	return parse_value(&input, output);
+	HJsonValue output = {0};
+	int error = parse_value(&input, &output);
+	HJsonParseResult result = {0};
+	result.output = output;
+	result.success = error == 0;
+	return result;
 }
