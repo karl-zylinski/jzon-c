@@ -1,7 +1,14 @@
 #ifndef _JZON_H_
 #define _JZON_H_
 
+#ifndef __cplusplus
 #include <stdbool.h>
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 struct JzonKeyValuePair;
 typedef struct JzonKeyValuePair JzonKeyValuePair;
@@ -53,5 +60,9 @@ JzonParseResult jzon_parse_custom_allocator(const char* input, JzonAllocator* al
 void jzon_free(JzonValue* value);
 void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator);
 JzonValue* jzon_get(JzonValue* value, const char* key);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
