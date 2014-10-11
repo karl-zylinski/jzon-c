@@ -1,10 +1,6 @@
 #ifndef _JZON_H_
 #define _JZON_H_
 
-typedef int bool;
-#define true 1
-#define false 0
-
 struct JzonKeyValuePair;
 typedef struct JzonKeyValuePair JzonKeyValuePair;
 
@@ -39,7 +35,6 @@ typedef struct JzonParseResult {
 	bool success;
 	JzonValue output;
 } JzonParseResult;
-
 
 JzonParseResult jzon_parse(const char* input);
 
