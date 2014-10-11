@@ -36,7 +36,19 @@ typedef struct JzonParseResult {
 	JzonValue* output;
 } JzonParseResult;
 
+typedef void* (*jzon_allocate)(size_t);
+typedef void (*jzon_deallocate)(void*);
+
+typedef struct JzonAllocator {
+	jzon_allocate allocate;
+	jzon_deallocate deallocate;
+} JzonAllocator;
+
+JzonParseResult jzon_parse(const char* input, JzonAllocator* allocator);
+// Uses standard malloc allocation.
 JzonParseResult jzon_parse(const char* input);
+void jzon_free(JzonValue* value, JzonAllocator* allocator);
+// Uses standard free deallocation.
 void jzon_free(JzonValue* value);
 
 #endif
