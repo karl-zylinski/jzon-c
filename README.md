@@ -1,7 +1,7 @@
 jzon-c
 ======
 
-Like hjson (http://laktak.github.io/hjson), but with optional root node and consistent use of double quotes (no single quotes for multiline strings). Only parser for the time being. Support for custom allocators is on the way.
+Like hjson (http://laktak.github.io/hjson), but with optional root node and consistent use of double quotes (no single quotes for multiline strings). Only parser for the time being. Support custom allocators, but uses malloc/free if no allocator is specified.
 
 The code has no dependencies and compiles as C++ and C99 (with the common anonymous union extension).
 
