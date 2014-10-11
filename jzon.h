@@ -17,7 +17,7 @@ typedef struct JzonValue
 	bool is_array;
 	bool is_bool;
 	bool is_null;
-	int size;
+	unsigned size;
 
 	union
 	{
