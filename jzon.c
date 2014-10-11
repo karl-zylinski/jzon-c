@@ -93,7 +93,7 @@ void skip_whitespace(const char** input)
 {
 	while (current(input))
 	{
-		while (current(input) && (current(input) <= ' ' || current(input) == '\n' || current(input) == '\r'))
+		while (current(input) && (current(input) <= ' ' || current(input) == ','))
 			next(input);
 		
 		// Skip comment.
@@ -241,11 +241,6 @@ int parse_array(const char** input, JzonValue* output)
 		arr_add(&array_values, value);
 		skip_whitespace(input);
 
-		if (current(input) == ',')
-			next(input);
-		
-		skip_whitespace(input);
-
 		if (current(input) == ']')
 		{
 			next(input);
@@ -286,12 +281,7 @@ int parse_object(const char** input, JzonValue* output, bool root_object)
 		skip_whitespace(input);
 		key = parse_keyname(input);
 		
-		if (key == NULL)
-			return -1;
-
-		skip_whitespace(input);
-
-		if (current(input) != ':')
+		if (key == NULL || current(input) != ':')
 			return -1;
 
 		next(input);
@@ -305,10 +295,6 @@ int parse_object(const char** input, JzonValue* output, bool root_object)
 		pair->key = key;
 		pair->value = value;
 		arr_add(&object_values, pair);
-
-		if (current(input) == ',')
-			next(input);
-		
 		skip_whitespace(input);
 
 		if (current(input) == '}')
