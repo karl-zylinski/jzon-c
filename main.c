@@ -114,7 +114,8 @@ int main()
 	load_file("test.jzon", &file);
 	result = jzon_parse(file);
 	assert(result.success == true);
-	pretty_print(0, &result.output);
+	pretty_print(0, result.output);
+	jzon_free(result.output);
 	getchar();
 	return 0;
 }

@@ -453,10 +453,40 @@ int parse_value(const char** input, JzonValue* output)
 
 JzonParseResult jzon_parse(const char* input)
 {
-	JzonValue output = {0};
-	int error = parse_object(&input, &output, true);
+	JzonValue* output = (JzonValue*)malloc(sizeof(JzonValue));
+	memset(output, 0, sizeof(JzonValue));
+	int error = parse_object(&input, output, true);
 	JzonParseResult result = {0};
 	result.output = output;
 	result.success = error == 0;
 	return result;
+}
+
+void jzon_free(JzonValue* value)
+{
+	unsigned i = 0;
+
+	if (value->is_object)
+	{
+		for (i = 0; i < value->size; ++i)
+		{
+			free(value->object_values[i]->key);
+			jzon_free(value->object_values[i]->value);
+		}
+
+		free(value->object_values);
+	}
+	else if (value->is_array)
+	{
+		for (i = 0; i < value->size; ++i)
+			jzon_free(value->array_values[i]);
+
+		free(value->array_values);
+	}
+	else if (value->is_string)
+	{
+		free(value->string_value);
+	}
+
+	free(value);
 }

@@ -33,9 +33,10 @@ struct JzonKeyValuePair {
 
 typedef struct JzonParseResult {
 	bool success;
-	JzonValue output;
+	JzonValue* output;
 } JzonParseResult;
 
 JzonParseResult jzon_parse(const char* input);
+void jzon_free(JzonValue* value);
 
 #endif
