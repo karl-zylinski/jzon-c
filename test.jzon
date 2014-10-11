@@ -2,4 +2,24 @@
     "rate": 1000 
     key: "value"
     text: look ma, no quotes!
+
+    commas:
+    {
+        one: 1
+        two: 2
+    }
+
+    trailing:
+    {
+        one: 1,
+        two: 2,
+    }
+
+    haiku: """
+    JSON I love you.
+    But you strangle my expression.
+    This is so much better.
+    """
+
+    favNumbers: [ 1, 2, 3, 6, 42 ]
 }

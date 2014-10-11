@@ -83,6 +83,11 @@ char current(const char** input)
 	return **input;
 }
 
+bool is_multiline_string_quotes(const char* str)
+{
+	return *str == '"' && *(str + 1) == '"' && *(str + 1) == '"';
+}
+
 void skip_whitespace(const char** input)
 {
 	while (current(input))
@@ -101,6 +106,40 @@ void skip_whitespace(const char** input)
 	}
 };
 
+char* parse_multiline_string(const char** input)
+{
+	String str = {0};
+	bool clean_whitespace = false;
+
+	if (!is_multiline_string_quotes(*input))
+		return NULL;
+	
+	*input += 3;
+
+	while (current(input))
+	{
+		if (current(input) == '\n' || current(input) == '\r')
+		{
+			skip_whitespace(input);
+
+			if (str.size > 0)
+				str_add(&str, '\n');
+		}
+
+		if (is_multiline_string_quotes(*input))
+		{
+			*input += 3;
+			return str.str;
+		}
+
+		str_add(&str, current(input));
+		next(input);
+	}
+
+	free(str.str);
+	return NULL;
+}
+
 char* parse_pure_string(const char** input)
 {
 	String str = {0};
@@ -108,12 +147,15 @@ char* parse_pure_string(const char** input)
 	if (current(input) != '"')
 		return NULL;
 
+	if (is_multiline_string_quotes(*input))
+		return parse_multiline_string(input);
+
 	next(input);
 
 	while (current(input))
 	{
 		char ch = current(input);
-
+		
 		if (ch == '"')
 		{
 			next(input);
@@ -149,12 +191,6 @@ char* parse_keyname(const char** input)
 		next(input);
 	}
 
-	return NULL;
-}
-
-
-char* parse_multiline_string(const char** input)
-{
 	return NULL;
 }
 
@@ -358,14 +394,7 @@ int parse_word_or_string(const char** input, JzonValue* output)
 
 		if (ch == '\r' || ch == '\n')
 		{
-			if (str.size == 3 && str_equals(&str, "'''"))
-			{
-				output->string_value = parse_multiline_string(input);
-				output->is_string = true;
-				free(str.str);
-				return 0;
-			}
-			else if (str.size == 4 && str_equals(&str, "true"))
+			if (str.size == 4 && str_equals(&str, "true"))
 			{
 				output->is_bool = true;
 				output->bool_value = true;
