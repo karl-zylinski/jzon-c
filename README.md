@@ -7,6 +7,8 @@ The code has no dependencies and compiles as C++ and C99 (with the common anonym
 
 Parts of the code is based on the JavaScript hjson implementation.
 
+There are a few things from hjson which I haven't implemented yet. The multiline string indentation rules aren't as sophisticated and there is no auto-escaping of non-quoted strings.
+
 Example on how jzon differs from hjson. This hjson:
 
 ```
