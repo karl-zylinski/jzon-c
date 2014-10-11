@@ -22,6 +22,7 @@ void str_grow(String* str)
 	else
 		strcpy(new_str, str->str);
 
+	free(str->str);
 	str->str = new_str;
 	str->capacity = new_capacity;
 }
@@ -56,6 +57,7 @@ void arr_grow(Array* arr)
 	int new_capacity = arr->capacity == 0 ? 1 : arr->capacity * 2;
 	void** new_arr = (void**)malloc(new_capacity * sizeof(void*));
 	memcpy(new_arr, arr->arr, arr->size * sizeof(void*));
+	free(arr->arr);
 	arr->arr = new_arr;
 	arr->capacity = new_capacity;
 }
