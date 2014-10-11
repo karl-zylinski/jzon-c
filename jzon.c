@@ -72,12 +72,12 @@ void arr_add(Array* arr, void* e)
 
 // Jzon implmenetation
 
-void next(const char** input)
+__forceinline void next(const char** input)
 {
 	++*input;
 }
 
-char current(const char** input)
+__forceinline char current(const char** input)
 {
 	return **input;
 }
