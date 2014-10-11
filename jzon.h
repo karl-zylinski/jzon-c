@@ -50,5 +50,6 @@ JzonParseResult jzon_parse(const char* input);
 void jzon_free(JzonValue* value, JzonAllocator* allocator);
 // Uses standard free deallocation.
 void jzon_free(JzonValue* value);
+JzonValue* jzon_get(JzonValue* value, const char* key);
 
 #endif

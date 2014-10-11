@@ -494,3 +494,21 @@ void jzon_free(JzonValue* value)
 	allocator.deallocate = free;
 	jzon_free(value, &allocator);
 }
+
+JzonValue* jzon_get(JzonValue* value, const char* key)
+{
+	unsigned i;
+
+	if (!value->is_object)
+		return NULL;
+		
+	for (i = 0; i < value->size; ++i)
+	{
+		JzonKeyValuePair* pair = value->object_values[i];
+
+		if (strcmp(pair->key, key) == 0)
+			return value;
+	}
+
+	return NULL;
+}
