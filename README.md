@@ -25,7 +25,8 @@ Example on how jzon differs from hjson. This hjson:
         two: 2,
     }
 
-    haiku: '''
+    haiku:
+    '''
     JSON I love you.
     But you strangle my expression.
     This is so much better.
@@ -54,7 +55,8 @@ trailing:
     two: 2,
 }
 
-haiku: """
+haiku:
+"""
 JSON I love you.
 But you strangle my expression.
 This is so much better.
