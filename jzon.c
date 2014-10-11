@@ -257,16 +257,17 @@ int parse_array(const char** input, JzonValue* output)
 	return 0;
 }
 
-int parse_object(const char** input, JzonValue* output)
+int parse_object(const char** input, JzonValue* output, bool root_object)
 {
 	Array object_values = {0};
 	JzonKeyValuePair* pair = NULL;
 
-	if (current(input) != '{')
+	if (current(input) == '{')
+		next(input);
+	else if (!root_object)
 		return -1;
 
 	output->is_object = true;
-	next(input);
 	
 	// Empty object.
 	if (current(input) == '}')
@@ -441,7 +442,7 @@ int parse_value(const char** input, JzonValue* output)
 
 	switch (ch)
 	{
-		case '{': return parse_object(input, output);
+		case '{': return parse_object(input, output, false);
 		case '[': return parse_array(input, output);
 		case '"': return parse_string(input, output);
 		case '-': return parse_number(input, output);
@@ -454,7 +455,7 @@ int parse_value(const char** input, JzonValue* output)
 JzonParseResult jzon_parse(const char* input)
 {
 	JzonValue output = {0};
-	int error = parse_value(&input, &output);
+	int error = parse_object(&input, &output, true);
 	JzonParseResult result = {0};
 	result.output = output;
 	result.success = error == 0;
