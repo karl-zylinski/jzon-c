@@ -507,7 +507,7 @@ JzonValue* jzon_get(JzonValue* value, const char* key)
 		JzonKeyValuePair* pair = value->object_values[i];
 
 		if (strcmp(pair->key, key) == 0)
-			return value;
+			return pair->value;
 	}
 
 	return NULL;
