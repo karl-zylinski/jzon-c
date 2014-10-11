@@ -439,7 +439,7 @@ int parse_value(const char** input, JzonValue* output, JzonAllocator* allocator)
 	return -1;
 }
 
-JzonParseResult jzon_parse(const char* input, JzonAllocator* allocator)
+JzonParseResult jzon_parse_custom_allocator(const char* input, JzonAllocator* allocator)
 {
 	JzonValue* output = (JzonValue*)allocator->allocate(sizeof(JzonValue));
 	memset(output, 0, sizeof(JzonValue));
@@ -455,10 +455,10 @@ JzonParseResult jzon_parse(const char* input)
 	JzonAllocator allocator;
 	allocator.allocate = malloc;
 	allocator.deallocate = free;
-	return jzon_parse(input, &allocator);
+	return jzon_parse_custom_allocator(input, &allocator);
 }
 
-void jzon_free(JzonValue* value, JzonAllocator* allocator)
+void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator)
 {
 	unsigned i = 0;
 
@@ -467,7 +467,7 @@ void jzon_free(JzonValue* value, JzonAllocator* allocator)
 		for (i = 0; i < value->size; ++i)
 		{
 			allocator->deallocate(value->object_values[i]->key);
-			jzon_free(value->object_values[i]->value, allocator);
+			jzon_free_custom_allocator(value->object_values[i]->value, allocator);
 		}
 
 		allocator->deallocate(value->object_values);
@@ -475,7 +475,7 @@ void jzon_free(JzonValue* value, JzonAllocator* allocator)
 	else if (value->is_array)
 	{
 		for (i = 0; i < value->size; ++i)
-			jzon_free(value->array_values[i], allocator);
+			jzon_free_custom_allocator(value->array_values[i], allocator);
 
 		allocator->deallocate(value->array_values);
 	}
@@ -492,7 +492,7 @@ void jzon_free(JzonValue* value)
 	JzonAllocator allocator;
 	allocator.allocate = malloc;
 	allocator.deallocate = free;
-	jzon_free(value, &allocator);
+	jzon_free_custom_allocator(value, &allocator);
 }
 
 JzonValue* jzon_get(JzonValue* value, const char* key)

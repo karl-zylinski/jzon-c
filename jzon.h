@@ -1,6 +1,8 @@
 #ifndef _JZON_H_
 #define _JZON_H_
 
+#include <stdbool.h>
+
 struct JzonKeyValuePair;
 typedef struct JzonKeyValuePair JzonKeyValuePair;
 
@@ -44,12 +46,12 @@ typedef struct JzonAllocator {
 	jzon_deallocate deallocate;
 } JzonAllocator;
 
-JzonParseResult jzon_parse(const char* input, JzonAllocator* allocator);
 // Uses standard malloc allocation.
 JzonParseResult jzon_parse(const char* input);
-void jzon_free(JzonValue* value, JzonAllocator* allocator);
+JzonParseResult jzon_parse_custom_allocator(const char* input, JzonAllocator* allocator);
 // Uses standard free deallocation.
 void jzon_free(JzonValue* value);
+void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator);
 JzonValue* jzon_get(JzonValue* value, const char* key);
 
 #endif
