@@ -5,7 +5,7 @@ Like hjson (http://laktak.github.io/hjson), but with optional root node and cons
 
 Parts of the code is based on the JavaScript hjson implementation.
 
-Example on how jzon differs from hjson. This hjzon:
+Example on how jzon differs from hjson. This hjson:
 
 ```
 {
