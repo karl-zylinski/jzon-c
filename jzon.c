@@ -432,12 +432,12 @@ int parse_number(const char** input, JzonValue* output, JzonAllocator* allocator
 	if (is_float)
 	{
 		output->is_float = true;
-		output->float_value = (float)atof(num.str);
+		output->float_value = (float)strtod(num.str, NULL);
 	}
 	else
 	{
 		output->is_int = true;
-		output->int_value = atoi(num.str);
+		output->int_value = (int)strtol(num.str, NULL, 10);
 	}
 
 	allocator->deallocate(num.str);
