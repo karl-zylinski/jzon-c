@@ -6,29 +6,26 @@
 
 int load_file(const char *filename, char **result) 
 { 
-	int size = 0;
-	FILE *f = fopen(filename, "rb");
+	FILE* fp;
+	size_t filesize;
+	unsigned char* data;
+	fp = fopen(filename, "rb");
 
-	if (f == NULL) 
-	{ 
-		*result = NULL;
-		return -1; // -1 means file opening fail 
-	}
+	assert(fp);
 
-	fseek(f, 0, SEEK_END);
-	size = ftell(f);
-	fseek(f, 0, SEEK_SET);
-	*result = (char *)malloc(size+1);
+	fseek(fp, 0, SEEK_END);
+	filesize = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
 
-	if (size != fread(*result, sizeof(char), size, f)) 
-	{ 
-		free(*result);
-		return -2; // -2 means file reading fail 
-	} 
+	data = (unsigned char*)malloc(filesize);
+	assert(data);
 
-	fclose(f);
-	(*result)[size] = 0;
-	return size;
+	fread(data, 1, filesize, fp);
+	data[filesize] = 0;
+	fclose(fp);
+
+	*result = data;
+	return filesize;
 }
 
 void pretty_print(int depth, JzonValue* value)
