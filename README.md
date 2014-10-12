@@ -64,6 +64,6 @@ The code has no dependencies. It compiles as C++ and C99 (with the common anonym
 
 You can use custom allocators by, instead of using jzon_parse (which defaults to malloc / free), using jzon_parse_custom_allocator. As second argument this function takes a JzonAllocator struct which should contain a function pointer to an allocate and a deallocate function.
 
-## Projects that use jzon
+## Projects using jzon
 
 - https://github.com/KarlZylinski/Raket — This game uses an engine which defines materials, fonts, entities etc using jzon.
