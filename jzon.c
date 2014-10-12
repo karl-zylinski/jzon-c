@@ -17,11 +17,9 @@ void str_grow(String* str, JzonAllocator* allocator)
 	int new_capacity = str->capacity == 0 ? 2 : str->capacity * 2;
 	char* new_str = (char*)allocator->allocate(new_capacity);
 	
-	if (str->str == NULL)
-		new_str[0] = 0;
-	else
+	if (str->str != NULL)
 		strcpy(new_str, str->str);
-
+	
 	allocator->deallocate(str->str);
 	str->str = new_str;
 	str->capacity = new_capacity;
