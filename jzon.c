@@ -197,7 +197,7 @@ char* parse_multiline_string(const char** input, JzonAllocator* allocator)
 	return NULL;
 }
 
-char* parse_pure_string(const char** input, JzonAllocator* allocator)
+char* parse_string_internal(const char** input, JzonAllocator* allocator)
 {
 	if (current(input) != '"')
 		return NULL;
@@ -227,7 +227,7 @@ char* parse_pure_string(const char** input, JzonAllocator* allocator)
 char* parse_keyname(const char** input, JzonAllocator* allocator)
 {
 	if (current(input) == '"')
-		return parse_pure_string(input, allocator);
+		return parse_string_internal(input, allocator);
 
 	String name = { 0 };
 
@@ -252,7 +252,7 @@ int parse_value(const char** input, JzonValue* output, JzonAllocator* allocator)
 
 int parse_string(const char** input, JzonValue* output, JzonAllocator* allocator)
 {
-	char* str = parse_pure_string(input, allocator);
+	char* str = parse_string_internal(input, allocator);
 
 	if (str == NULL)
 		return -1;
