@@ -439,6 +439,9 @@ int parse_value(const char** input, JzonValue* output, JzonAllocator* allocator)
 	return -1;
 }
 
+
+// Public interface
+
 JzonParseResult jzon_parse_custom_allocator(const char* input, JzonAllocator* allocator)
 {
 	JzonValue* output = (JzonValue*)allocator->allocate(sizeof(JzonValue));
