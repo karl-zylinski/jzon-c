@@ -20,7 +20,8 @@ This is a C99 / C++ implementation. Only parser for the time being.
 
 ## How does jzon differ from SJON?
 
-- String value quotes are optional
+- String value quotes are optional.
+- Stuck to the default JSON delimiter for key-value-pairs (:, SJSON uses =).
 
 ## Installation and usage
 
