@@ -25,7 +25,7 @@ The easiest way is to just throw jzon.h and jzon.c into your project. Include jz
 
 ## Dependencies
 
-The code has no dependencies and compiles as C++ and C99 (with the common anonymous union extension).
+The code has no dependencies. It compiles as C++ and C99 (with the common anonymous union extension).
 
 ## Custom allocators
 
