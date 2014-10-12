@@ -65,10 +65,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="jzon.c" />
+    <ClCompile Include="../jzon.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="jzon.h" />
+    <ClInclude Include="../jzon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
