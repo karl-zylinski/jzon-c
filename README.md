@@ -5,7 +5,7 @@ jzon is a format for describing data. It is based on Hjson (http://laktak.github
 
 This is a C99 / C++ implementation. Only parser for the time being.
 
-## How does it differ from JSON?
+## How does jzon differ from JSON?
 
 - Quotes around keys and values are optional.
 - Multi-line string support.
