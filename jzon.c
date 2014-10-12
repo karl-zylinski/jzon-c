@@ -54,7 +54,7 @@ void arr_grow(Array* arr, JzonAllocator* allocator)
 {
 	int new_capacity = arr->capacity == 0 ? 1 : arr->capacity * 2;
 	void** new_arr = (void**)allocator->allocate(new_capacity * sizeof(void**));
-	memcpy(new_arr, arr->arr, arr->size * sizeof(void*));
+	memcpy(new_arr, arr->arr, arr->size * sizeof(void**));
 	allocator->deallocate(arr->arr);
 	arr->arr = new_arr;
 	arr->capacity = new_capacity;
