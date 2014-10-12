@@ -1,7 +1,7 @@
 jzon-c
 ======
 
-jzon is a format for describing data. It is based on Hjson (http://laktak.github.io/hjson) and SJSON (http://bitsquid.blogspot.se/2009/10/simplified-json-notation.html)
+jzon is a format for describing data. It is based on Hjson (http://laktak.github.io/hjson) and SJSON (http://bitsquid.blogspot.se/2009/10/simplified-json-notation.html).
 
 This is a C99 / C++ implementation. Only parser for the time being.
 
