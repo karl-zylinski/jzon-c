@@ -20,7 +20,7 @@ This is a C99 / C++ implementation. Only parser for the time being.
 
 Parts of the code is based on the JavaScript Hjson implementation. The multi-line string indentation rules aren't as sophisticated as in Hjson (yet).
 
-## How does jzon differ from SJON?
+## How does jzon differ from SJSON?
 
 - String value quotes are optional.
 - Stuck to the default JSON delimiter for key-value-pairs (:, SJSON uses =).
