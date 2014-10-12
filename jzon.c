@@ -237,10 +237,8 @@ char* parse_keyname(const char** input, JzonAllocator* allocator)
 
 		if (ch == ':')
 			return name.str;
-		else if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9')
-			str_add(&name, ch, allocator);
 		else
-			return NULL;
+			str_add(&name, ch, allocator);
 
 		next(input);
 	}
