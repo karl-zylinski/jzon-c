@@ -18,7 +18,7 @@ This is a C99 / C++ implementation. Only parser for the time being.
 - Triple double quote is used for multi-line strings instead of triple single quote.
 - Non-quoted object keys may contain any character except for colon.
 
-## How does jzon differ from and relate to Hjson?
+## How does jzon differ from SJON?
 
 - String value quotes are optional
 
