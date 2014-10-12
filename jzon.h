@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #endif
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -37,6 +39,7 @@ typedef struct JzonValue
 
 struct JzonKeyValuePair {
 	char* key;
+	uint64_t key_hash;
 	JzonValue* value;
 };
 
