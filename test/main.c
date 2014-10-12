@@ -6,7 +6,7 @@
 
 typedef struct LoadedFile
 {
-	int size;
+	size_t size;
 	char* data;
 } LoadedFile;
 
