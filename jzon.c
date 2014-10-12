@@ -53,7 +53,7 @@ typedef struct Array
 void arr_grow(Array* arr, JzonAllocator* allocator)
 {
 	int new_capacity = arr->capacity == 0 ? 1 : arr->capacity * 2;
-	void** new_arr = (void**)allocator->allocate(new_capacity * sizeof(void*));
+	void** new_arr = (void**)allocator->allocate(new_capacity * sizeof(void**));
 	memcpy(new_arr, arr->arr, arr->size * sizeof(void*));
 	allocator->deallocate(arr->arr);
 	arr->arr = new_arr;
@@ -66,6 +66,16 @@ void arr_add(Array* arr, void* e, JzonAllocator* allocator)
 		arr_grow(arr, allocator);
 
 	arr->arr[arr->size] = e;
+	++arr->size;
+}
+
+void arr_insert(Array* arr, void* e, unsigned index, JzonAllocator* allocator)
+{
+	if (arr->size == arr->capacity)
+		arr_grow(arr, allocator);
+
+	memmove(arr->arr + index + 1, arr->arr + index, (arr->size - index) * sizeof(void**));
+	arr->arr[index] = e;
 	++arr->size;
 }
 
@@ -145,6 +155,20 @@ __forceinline char current(const char** input)
 bool is_multiline_string_quotes(const char* str)
 {
 	return *str == '"' && *(str + 1) == '"' && *(str + 1) == '"';
+}
+
+int find_object_pair_insertion_index(JzonKeyValuePair** objects, unsigned size, uint64_t key_hash)
+{
+	if (size == 0)
+		return 0;
+
+	for (unsigned i = 0; i < size; ++i)
+	{
+		if (objects[i]->key_hash > key_hash)
+			return i;
+	}
+
+	return size;
 }
 
 void skip_whitespace(const char** input)
@@ -341,7 +365,7 @@ int parse_object(const char** input, JzonValue* output, bool root_object, JzonAl
 		pair->key = key;
 		pair->key_hash = hash_str(key);
 		pair->value = value;
-		arr_add(&object_values, pair, allocator);
+		arr_insert(&object_values, pair, find_object_pair_insertion_index((JzonKeyValuePair**)object_values.arr, object_values.size, pair->key_hash), allocator);
 		skip_whitespace(input);
 
 		if (current(input) == '}')
@@ -539,15 +563,26 @@ JzonValue* jzon_get(JzonValue* object, const char* key)
 {
 	if (!object->is_object)
 		return NULL;
+
+	if (object->size == 0)
+		return NULL;
 	
 	uint64_t key_hash = hash_str(key);
 
-	for (unsigned i = 0; i < object->size; ++i)
-	{
-		JzonKeyValuePair* pair = object->object_values[i];
+	unsigned first = 0;
+	unsigned last = object->size - 1;
+	unsigned middle = (first + last) / 2;
 
-		if (pair->key_hash == key_hash)
-			return pair->value;
+	while (first <= last)
+	{
+		if (object->object_values[middle]->key_hash < key_hash)
+			first = middle + 1;
+		else if (object->object_values[middle]->key_hash == key_hash)
+			return object->object_values[middle]->value;
+		else
+			last = middle - 1;
+
+		middle = (first + last) / 2;
 	}
 
 	return NULL;
