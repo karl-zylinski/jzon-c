@@ -4,7 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-int load_file(const char *filename, char **result) 
+typedef struct LoadedFile
+{
+	int size;
+	char* data;
+} LoadedFile;
+
+LoadedFile load_file(const char *filename)
 { 
 	FILE* fp;
 	size_t filesize;
@@ -24,8 +30,10 @@ int load_file(const char *filename, char **result)
 	data[filesize] = 0;
 	fclose(fp);
 
-	*result = data;
-	return filesize;
+	LoadedFile lf;
+	lf.data = data;
+	lf.size = filesize;
+	return lf;
 }
 
 void pretty_print(int depth, JzonValue* value)
@@ -105,11 +113,8 @@ void pretty_print(int depth, JzonValue* value)
 
 int main()
 {
-	char* file;
-	int error = 0;
-	JzonParseResult result;
-	load_file("test.jzon", &file);
-	result = jzon_parse(file);
+	LoadedFile file = load_file("test.jzon");
+	JzonParseResult result = jzon_parse(file.data);
 	assert(result.success == true);
 	pretty_print(0, result.output);
 	jzon_free(result.output);

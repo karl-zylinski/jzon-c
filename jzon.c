@@ -109,13 +109,11 @@ void skip_whitespace(const char** input)
 
 char* parse_multiline_string(const char** input, JzonAllocator* allocator)
 {
-	String str = {0};
-	bool clean_whitespace = false;
-
 	if (!is_multiline_string_quotes(*input))
 		return NULL;
 	
 	*input += 3;
+	String str = { 0 };
 
 	while (current(input))
 	{
@@ -143,8 +141,6 @@ char* parse_multiline_string(const char** input, JzonAllocator* allocator)
 
 char* parse_pure_string(const char** input, JzonAllocator* allocator)
 {
-	String str = {0};
-
 	if (current(input) != '"')
 		return NULL;
 
@@ -152,18 +148,17 @@ char* parse_pure_string(const char** input, JzonAllocator* allocator)
 		return parse_multiline_string(input, allocator);
 
 	next(input);
+	String str = { 0 };
 
 	while (current(input))
 	{
-		char ch = current(input);
-		
-		if (ch == '"')
+		if (current(input) == '"')
 		{
 			next(input);
 			return str.str;
 		}
 
-		str_add(&str, ch, allocator);
+		str_add(&str, current(input), allocator);
 		next(input);
 	}
 
@@ -173,10 +168,10 @@ char* parse_pure_string(const char** input, JzonAllocator* allocator)
 
 char* parse_keyname(const char** input, JzonAllocator* allocator)
 {
-	String name = {0};
-
 	if (current(input) == '"')
 		return parse_pure_string(input, allocator);
+
+	String name = { 0 };
 
 	while (current(input))
 	{
@@ -210,9 +205,7 @@ int parse_string(const char** input, JzonValue* output, JzonAllocator* allocator
 }
 
 int parse_array(const char** input, JzonValue* output, JzonAllocator* allocator)
-{
-	Array array_values = {0};
-	
+{	
 	if (current(input) != '[')
 		return -1;
 	
@@ -226,14 +219,14 @@ int parse_array(const char** input, JzonValue* output, JzonAllocator* allocator)
 		return 0;
 	}
 
+	Array array_values = { 0 };
+
 	while (current(input))
 	{
-		JzonValue* value = NULL;
-		int error = 0;
 		skip_whitespace(input);
-		value = (JzonValue*)allocator->allocate(sizeof(JzonValue));
+		JzonValue* value = (JzonValue*)allocator->allocate(sizeof(JzonValue));
 		memset(value, 0, sizeof(JzonValue));
-		error = parse_value(input, value, allocator);
+		int error = parse_value(input, value, allocator);
 
 		if (error != 0)
 			return error;
@@ -255,9 +248,6 @@ int parse_array(const char** input, JzonValue* output, JzonAllocator* allocator)
 
 int parse_object(const char** input, JzonValue* output, bool root_object, JzonAllocator* allocator)
 {
-	Array object_values = {0};
-	JzonKeyValuePair* pair = NULL;
-
 	if (current(input) == '{')
 		next(input);
 	else if (!root_object)
@@ -272,22 +262,21 @@ int parse_object(const char** input, JzonValue* output, bool root_object, JzonAl
 		return 0;
 	}
 
+	Array object_values = { 0 };
+
 	while (current(input))
 	{
-		char* key = NULL;
-		JzonValue* value = NULL;
-		int error = 0;
-		pair = (JzonKeyValuePair*)allocator->allocate(sizeof(JzonKeyValuePair));
+		JzonKeyValuePair* pair = (JzonKeyValuePair*)allocator->allocate(sizeof(JzonKeyValuePair));
 		skip_whitespace(input);
-		key = parse_keyname(input, allocator);
+		char* key = parse_keyname(input, allocator);
 		
 		if (key == NULL || current(input) != ':')
 			return -1;
 
 		next(input);
-		value = (JzonValue*)allocator->allocate(sizeof(JzonValue));
+		JzonValue* value = (JzonValue*)allocator->allocate(sizeof(JzonValue));
 		memset(value, 0, sizeof(JzonValue));
-		error = parse_value(input, value, allocator);
+		int error = parse_value(input, value, allocator);
 
 		if (error != 0)
 			return error;
@@ -341,6 +330,7 @@ int parse_number(const char** input, JzonValue* output, JzonAllocator* allocator
 
 	if (current(input) == 'e' || current(input) == 'E')
 	{
+		is_float = true;
 		str_add(&num, current(input), allocator);
 		next(input);
 
@@ -378,9 +368,7 @@ int parse_word_or_string(const char** input, JzonValue* output, JzonAllocator* a
 
 	while (current(input))
 	{
-		char ch = current(input);
-
-		if (ch == '\r' || ch == '\n')
+		if (current(input) == '\r' || current(input) == '\n')
 		{
 			if (str.size == 4 && str_equals(&str, "true"))
 			{
@@ -412,7 +400,7 @@ int parse_word_or_string(const char** input, JzonValue* output, JzonAllocator* a
 			break;
 		}		
 		else
-			str_add(&str, ch, allocator);
+			str_add(&str, current(input), allocator);
 
 		next(input);
 	}
@@ -423,9 +411,8 @@ int parse_word_or_string(const char** input, JzonValue* output, JzonAllocator* a
 
 int parse_value(const char** input, JzonValue* output, JzonAllocator* allocator)
 {
-	char ch;
 	skip_whitespace(input);
-	ch = current(input);
+	char ch = current(input);
 
 	switch (ch)
 	{
@@ -455,19 +442,15 @@ JzonParseResult jzon_parse_custom_allocator(const char* input, JzonAllocator* al
 
 JzonParseResult jzon_parse(const char* input)
 {
-	JzonAllocator allocator;
-	allocator.allocate = malloc;
-	allocator.deallocate = free;
+	JzonAllocator allocator = { malloc, free };
 	return jzon_parse_custom_allocator(input, &allocator);
 }
 
 void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator)
 {
-	unsigned i = 0;
-
 	if (value->is_object)
 	{
-		for (i = 0; i < value->size; ++i)
+		for (unsigned i = 0; i < value->size; ++i)
 		{
 			allocator->deallocate(value->object_values[i]->key);
 			jzon_free_custom_allocator(value->object_values[i]->value, allocator);
@@ -477,7 +460,7 @@ void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator)
 	}
 	else if (value->is_array)
 	{
-		for (i = 0; i < value->size; ++i)
+		for (unsigned i = 0; i < value->size; ++i)
 			jzon_free_custom_allocator(value->array_values[i], allocator);
 
 		allocator->deallocate(value->array_values);
@@ -492,20 +475,16 @@ void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator)
 
 void jzon_free(JzonValue* value)
 {
-	JzonAllocator allocator;
-	allocator.allocate = malloc;
-	allocator.deallocate = free;
+	JzonAllocator allocator = { malloc, free };
 	jzon_free_custom_allocator(value, &allocator);
 }
 
 JzonValue* jzon_get(JzonValue* object, const char* key)
 {
-	unsigned i;
-
 	if (!object->is_object)
 		return NULL;
 		
-	for (i = 0; i < object->size; ++i)
+	for (unsigned i = 0; i < object->size; ++i)
 	{
 		JzonKeyValuePair* pair = object->object_values[i];
 
