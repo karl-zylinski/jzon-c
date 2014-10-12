@@ -68,7 +68,7 @@ void jzon_free(JzonValue* value);
 // Free parse result data structure which was parsed using custom allocator. Make sure to pass the same allocator you did to jzon_parse_custom_allocator.
 void jzon_free_custom_allocator(JzonValue* value, JzonAllocator* allocator);
 
-// Get value from object using key. Returns NULL if object is not an actual jzon object or there exists no value with the specified key.
+// Find object value by key. Returns NULL if object is not an actual jzon object or there exists no value with the specified key. Uses a binary search algorithm.
 JzonValue* jzon_get(JzonValue* object, const char* key);
 
 #ifdef __cplusplus
