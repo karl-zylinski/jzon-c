@@ -327,6 +327,7 @@ int parse_object(const char** input, JzonValue* output, bool root_object, JzonAl
 		JzonKeyValuePair* pair = (JzonKeyValuePair*)allocator->allocate(sizeof(JzonKeyValuePair));
 		skip_whitespace(input);
 		char* key = parse_keyname(input, allocator);
+		skip_whitespace(input);
 		
 		if (key == NULL || current(input) != ':')
 			return -1;
