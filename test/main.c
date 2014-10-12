@@ -31,7 +31,7 @@ LoadedFile load_file(const char *filename)
 	fclose(fp);
 
 	LoadedFile lf;
-	lf.data = data;
+	lf.data = (char*)data;
 	lf.size = filesize;
 	return lf;
 }
@@ -119,6 +119,7 @@ int main()
 	pretty_print(0, result.output);
 	JzonValue* trailing_value = jzon_get(result.output, "mysterious_words_by_id");
 	assert(trailing_value != NULL);
+	(void)trailing_value;
 	jzon_free(result.output);
 	getchar();
 	return 0;
