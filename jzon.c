@@ -70,8 +70,9 @@ void arr_add(Array* arr, void* e, JzonAllocator* allocator)
 }
 
 
-/// Implementation of the 64 bit MurmurHash2 function
-/// http://murmurhash.googlepages.com/
+// Hash function used for hashing object keys.
+// From http://murmurhash.googlepages.com/
+
 uint64_t hash_str(const char* str)
 {
 	size_t len = strlen(str);
