@@ -117,7 +117,7 @@ int main()
 	JzonParseResult result = jzon_parse(file.data);
 	assert(result.success == true);
 	pretty_print(0, result.output);
-	JzonValue* trailing_value = jzon_get(result.output, "trailing");
+	JzonValue* trailing_value = jzon_get(result.output, "mysterious_words_by_id");
 	assert(trailing_value != NULL);
 	jzon_free(result.output);
 	getchar();
