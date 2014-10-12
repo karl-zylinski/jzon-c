@@ -18,6 +18,8 @@ This is a C99 / C++ implementation. Only parser for the time being.
 - Triple double quote is used for multi-line strings instead of triple single quote.
 - Non-quoted object keys may contain any character except for colon.
 
+Parts of the code is based on the JavaScript Hjson implementation. There are a few things from Hjson which I haven't implemented yet. The multi-line string indentation rules aren't as sophisticated.
+
 ## How does jzon differ from SJON?
 
 - String value quotes are optional.
