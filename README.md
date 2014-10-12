@@ -1,70 +1,32 @@
 jzon-c
 ======
 
-Like hjson (http://laktak.github.io/hjson), but with optional root node and consistent use of double quotes (no single quotes for multiline strings). Only parser for the time being. Supports custom allocators, but uses malloc/free if no allocator is specified.
+jzon is a format for describing data. It is based on Hjson (http://laktak.github.io/hjson), which in turn is based on JSON.
+
+This is a C99 / C++ implementation. Only parser for the time being.
+
+## How does it differ from JSON?
+
+- Quotes around keys and values are optional.
+- Multi-line string support.
+- Commas are optional.
+- Explicit root node is optional.
+
+## How does jzon differ from and relate to Hjson?
+
+- Explicit root node is optional.
+- Triple double quote is used for multi-line strings instead of triple single quote.
+
+Parts of the code is based on the JavaScript Hjson implementation. There are a few things from Hjson which I haven't implemented yet. The multi-line string indentation rules aren't as sophisticated and there is no auto-escaping of non-quoted strings.
+
+## Installation and usage
+
+The easiest way is to just throw jzon.h and jzon.c into your project. Include jzon.h and then call jzon_parse(your_string_with_jzon) to have it parse your jzon.
+
+## Dependencies
 
 The code has no dependencies and compiles as C++ and C99 (with the common anonymous union extension).
 
-Parts of the code is based on the JavaScript hjson implementation.
+## Custom allocators
 
-There are a few things from hjson which I haven't implemented yet. The multiline string indentation rules aren't as sophisticated and there is no auto-escaping of non-quoted strings.
-
-Example on how jzon differs from hjson. This hjson:
-
-```
-{
-    "rate": 1000 
-    key: "value"
-    text: look ma, no quotes!
-
-    commas:
-    {
-        one: 1
-        two: 2
-    }
-
-    trailing:
-    {
-        one: 1,
-        two: 2,
-    }
-
-    haiku:
-    '''
-    JSON I love you.
-    But you strangle my expression.
-    This is so much better.
-    '''
-
-    favNumbers: [ 1, 2, 3, 6, 42 ]
-}
-```
-
-Is equivalent to this jzon:
-
-```
-"rate": 1000 
-key: "value"
-text: look ma, no quotes!
-
-commas:
-{
-    one: 1
-    two: 2
-}
-
-trailing:
-{
-    one: 1,
-    two: 2,
-}
-
-haiku:
-"""
-JSON I love you.
-But you strangle my expression.
-This is so much better.
-"""
-
-favNumbers: [ 1, 2, 3, 6, 42 ]
-```
+You can use custom allocators by, instead of using jzon_parse (which defaults to malloc / free), using jzon_parse_custom_allocator. As second argument this function takes a JzonAllocator struct which should contain a function pointer to an allocate and a deallocate function.
