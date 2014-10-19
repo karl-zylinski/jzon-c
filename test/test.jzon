@@ -1,6 +1,6 @@
 key: "value"
-something: quotes are not needed
-"but you can still use them if want to": <-- he's drunk, don't listen to him
+something: "quotes are not needed"
+"but you can still use them if want to": "<-- he's drunk, don't listen to him"
 
 # These are really the best, I promise.
 the_best_numbers: [ 2, 7, 12, 18 ]
