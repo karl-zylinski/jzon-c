@@ -17,13 +17,13 @@ typedef struct JzonKeyValuePair JzonKeyValuePair;
 
 typedef struct JzonValue
 {
-	bool is_string;
-	bool is_int;
-	bool is_float;
-	bool is_object;
-	bool is_array;
-	bool is_bool;
-	bool is_null;
+	bool is_string : 1;
+	bool is_int : 1;
+	bool is_float : 1;
+	bool is_object : 1;
+	bool is_array : 1;
+	bool is_bool : 1;
+	bool is_null : 1;
 	unsigned size;
 
 	union
