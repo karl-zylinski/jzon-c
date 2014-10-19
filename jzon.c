@@ -212,7 +212,7 @@ char* parse_multiline_string(const char** input, JzonAllocator* allocator)
 				result = new_result;
 			}
 
-			start = *input;
+			start = (char*)*input;
 		}
 
 		if (is_multiline_string_quotes(*input))
