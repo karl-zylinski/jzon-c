@@ -11,8 +11,8 @@ This is a C99 / C++ implementation. Only parser for the time being.
 
 ```
 key: "value"
-something: quotes are not needed
-"but you can still use them if want to": <-- he's drunk, don't listen to him
+quotes are not needed for keys: "very nice"
+"but you can still use them if want to": "<-- he's drunk, don't listen to him"
 
 # These are really the best, I promise.
 the_best_numbers: [ 2, 7, 12, 18 ]
@@ -34,7 +34,7 @@ mysterious_words_by_id: {
 
 ## How does jzon differ from JSON?
 
-- Quotes around keys and values are optional.
+- Quotes around keys are optional.
 - Multi-line string support.
 - Commas are optional.
 - Explicit root node is optional.
@@ -42,6 +42,7 @@ mysterious_words_by_id: {
 ## How does jzon differ from and relate to Hjson?
 
 - Explicit root node is optional.
+- Quotes around values are not optional.
 - Triple double quote is used for multi-line strings instead of triple single quote.
 - Non-quoted object keys may contain any character except for colon.
 
@@ -49,7 +50,6 @@ Parts of the code is based on the JavaScript Hjson implementation. The multi-lin
 
 ## How does jzon differ from SJSON?
 
-- String value quotes are optional.
 - Stuck to the default JSON delimiter for key-value-pairs (:, SJSON uses =).
 
 ## Installation and usage
