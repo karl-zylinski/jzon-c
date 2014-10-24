@@ -1,5 +1,5 @@
 key: "value"
-something: "quotes are not needed"
+quotes are not needed for keys: "very nice"
 "but you can still use them if want to": "<-- he's drunk, don't listen to him"
 
 # These are really the best, I promise.
