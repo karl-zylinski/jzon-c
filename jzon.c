@@ -128,7 +128,7 @@ uint64_t hash_str(const char* str)
 }
 
 
-// Jzon implmenetation
+// Jzon implementation
 
 __forceinline void next(const char** input)
 {
