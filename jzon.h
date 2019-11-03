@@ -1,59 +1,58 @@
-#ifndef _JZON_H_
-#define _JZON_H_
-
-#ifndef __cplusplus
-#include <stdbool.h>
-#endif
-
-#include <stdint.h>
+#pragma once
 
 #ifdef __cplusplus
 extern "C"
 {
+#else
+#include <stdbool.h>
 #endif
+
+#include <stdint.h>
 
 struct JzonKeyValuePair;
 typedef struct JzonKeyValuePair JzonKeyValuePair;
 
 typedef struct JzonValue
 {
-	bool is_string : 1;
-	bool is_int : 1;
-	bool is_float : 1;
-	bool is_object : 1;
-	bool is_array : 1;
-	bool is_bool : 1;
-	bool is_null : 1;
-	unsigned size;
+    bool is_string : 1;
+    bool is_int : 1;
+    bool is_float : 1;
+    bool is_table : 1;
+    bool is_array : 1;
+    bool is_bool : 1;
+    bool is_null : 1;
+    uint32_t size;
 
-	union
-	{
-		char* string_value;
-		int int_value;
-		bool bool_value;
-		float float_value;
-		struct JzonKeyValuePair** object_values;
-		struct JzonValue** array_values;
-	};
+    union
+    {
+        char* string_val;
+        int int_val;
+        bool bool_val;
+        float float_val;
+        struct JzonKeyValuePair* table_val;
+        struct JzonValue* array_val;
+    };
 } JzonValue;
 
 struct JzonKeyValuePair {
-	char* key;
-	uint64_t key_hash;
-	JzonValue* value;
+    char* key;
+    uint64_t key_hash;
+    JzonValue val;
 };
 
 typedef struct JzonParseResult {
-	bool success;
-	JzonValue* output;
+    bool ok;
+    JzonValue output;
 } JzonParseResult;
 
 typedef void* (*jzon_allocate)(size_t);
 typedef void (*jzon_deallocate)(void*);
+typedef void* (*jzon_reallocate)(void*, size_t);
 
 typedef struct JzonAllocator {
-	jzon_allocate allocate;
-	jzon_deallocate deallocate;
+    jzon_allocate allocate;
+    jzon_deallocate deallocate;
+    jzon_reallocate reallocate;
 } JzonAllocator;
 
 // Parse using default malloc allocator.
@@ -73,6 +72,4 @@ JzonValue* jzon_get(JzonValue* object, const char* key);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

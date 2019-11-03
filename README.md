@@ -5,7 +5,7 @@ jzon is a format for describing data that is easier and less error-prone to edit
 
 It is based on Hjson (http://laktak.github.io/hjson) and SJSON (http://bitsquid.blogspot.se/2009/10/simplified-json-notation.html), which are both in turn based on JSON.
 
-This is a C99 / C++ implementation. Only parser for the time being.
+It is written in C11. It is only a parser.
 
 ## jzon can look like this
 
@@ -16,6 +16,7 @@ quotes are not needed for keys: "very nice"
 
 # These are really the best, I promise.
 the_best_numbers: [ 2, 7, 12, 18 ]
+the_truth: true
 
 instructions: """
     Take one liter of flour.
@@ -46,8 +47,6 @@ mysterious_words_by_id: {
 - Triple double quote is used for multi-line strings instead of triple single quote.
 - Non-quoted object keys may contain any character except for colon.
 
-Parts of the code is based on the JavaScript Hjson implementation. The multi-line string indentation rules aren't as sophisticated as in Hjson (yet).
-
 ## How does jzon differ from SJSON?
 
 - Stuck to the default JSON delimiter for key-value-pairs (:, SJSON uses =).
@@ -58,8 +57,8 @@ The easiest way is to just throw jzon.h and jzon.c into your project. Include jz
 
 ## Dependencies
 
-The code has no dependencies. It compiles as C++ and C99 (with the common anonymous union extension).
+The code has no dependencies. It compiles as C11 and should be usable within a C++ project. It may use some extensions that my give warnings.
 
 ## Custom allocators
 
-You can use custom allocators by, instead of using jzon_parse (which defaults to malloc / free), using jzon_parse_custom_allocator. As second argument this function takes a JzonAllocator struct which should contain a function pointer to an allocate and a deallocate function.
+You can use custom allocators by instead of using jzon_parse (which defaults to malloc / free / realloc), using jzon_parse_custom_allocator. As second argument this function takes a JzonAllocator struct which should contain a function pointer to an allocate and a deallocate function.

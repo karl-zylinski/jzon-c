@@ -1,0 +1,57 @@
+key: "value"
+quotes are not needed for keys: "very nice"
+"but you can still use them if want to": "mmm"
+
+# This is a comment. The following number are the best.
+the_best_numbers: [ 2, 7, 12, 18 ]
+
+the_truth: true
+the_fallacy: false
+
+instructions: """
+    Take one liter of flour.
+    Eat an elevator.
+    Do a backflip.
+    Enjoy.
+"""
+
+mysterious_words_by_id: {
+    190ca652-c561-4207-9bdf-d92ff5d01efa: "uggla"
+    5c05febd-192c-4a0a-872b-0b4def2d67a1: "spade"
+    590a13cd-7ef7-41cc-90e0-f2e0ee8c54f3: "termoskvarn"
+    3f3a7dbc-b86f-4461-9c7b-e3ca197ce0b2: "baabaaaaa"
+    7b09c1a7-01bf-45c0-be19-753e1faecdde: "hello"
+    be72b123-c451-4075-b84c-6dcce6648d03: "lotsaaaa things"
+    6c1ec0ee-7fa5-4f77-b606-2b55b6b1385d: "yes"
+}
+
+nested_table: {
+	things: [
+		{ val: "test0_value" }
+		{ val: "test1_value" }
+	]
+}
+
+list_of_lists: [
+    [ "first thing in first list in list"]
+    [ "list00" "list01" "list02" ]
+    [ "list10" "list11" "list12" "list13" ]
+    [ "list20" "list21" "list22" "list23" ]
+    [ "list30" "list31" "list32" ]
+    [ "last thing in first list in list" ]
+    [
+        {
+            "lol jk last item is an object!!": "babooo"
+            "and it has.. the same lists in itself!!! in itself!!": [
+                [ "first thing in first list in list"]
+                [ "list00" "list01" "list02" ]
+                [ "list10" "list11" "list12" "list13" ]
+                [ "list20" "list21" "list22" "list23" ]
+                [ "list30" "list31" "list32" ]
+                [ "last thing in first list in list" ]
+            ]
+        }
+    ]
+]
+
+
